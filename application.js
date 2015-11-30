@@ -3,24 +3,7 @@ $(function(){
   var player1score = 501;
   var player2score = 501;
 
-  function canPlayerWin(){
-    var result = false;
-    var playerOneCurrentPoint = $('#player1_move_score');
-    if (playerOneCurrentPoint.val() <= 158){
-      result = true
-    } else {
-      switch(parseInt(playerOneCurrentPoint)){
-        case 170:
-        case 167:
-        case 164:
-        case 161:
-        case 160:
-        result = true
-      }
-    }
 
-    return result;
-  }
 
 
   function checkInputPlayerOne()
@@ -72,15 +55,36 @@ $(function(){
     $('#player2_move_score').val('');
   };
 
+  canFinish = [170, 167, 164, 161, 160];
+  for (var i = 2; i <= 159; i++) {
+      canFinish.push(i);
+  };
+
+  function checkIfCanFinishPlayerOne() {
+    var checkScore = $('#player1score').val();
+    if (($.inArray(checkScore, canFinish)) === -1) {
+      alert ('not good yet');
+    }
+    else{
+      alert ('You can finish!');
+    }
+  };
+
+  function checkIfCanFinishPlayerTwo() {
+    var checkScore = $('#player2score').val();
+    if (($.inArray(checkScore, canFinish)) === -1) {
+      alert ('not good yet');
+    }
+    else{
+      alert ('You can finish!');
+    }
+  };
+
 
   $('#player2form').hide();
 
   $('#player1form').on("submit", function(e) {
-    e.preventDefault();
-    if (canPlayerWin() === true){
-        alert('you could finish next turn!')
-      }
-    // console.log("Form submitted");
+ checkIfCanFinishPlayerOne();
     while(true){
         //prompt here
         var current_player1_score = $('#player1_move_score').val();
@@ -89,7 +93,7 @@ $(function(){
             break;
         } else {
             // alert("must input valid amount");
-            return false;
+            return true;
         } 
     }
     var new_total = player1score - parseInt(current_player1_score);
@@ -102,6 +106,7 @@ $(function(){
 
   $('#player2form').on("submit", function(e) {
     e.preventDefault();
+    checkIfCanFinishPlayerTwo();
     // console.log("Form submitted");
     while(true){
         //prompt here
@@ -111,7 +116,7 @@ $(function(){
             break;
         } else {
             // alert("must input valid amount");
-            return false;
+            return true;
         } 
     }
     var current_player2_score = $('#player2_move_score').val();
